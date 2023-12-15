@@ -52,18 +52,12 @@ before you're only on nodes that end with Z?
 
 using namespace std;
 
-long getLcm(vector<int> arr) {
-  long res = 1;
-  for (int i = 0; i < arr.size(); i++) {
-    res = lcm(res, arr[i]);
-  }
-  return res;
-}
+long doLcm(long a, long b) { return lcm(a, b); }
 
-vector<int> followMap(string instructions, vector<string> nodes,
-                      unordered_map<string, pair<string, string>> m) {
+vector<long> followMap(string instructions, vector<string> nodes,
+                       unordered_map<string, pair<string, string>> m) {
   int i = 0;
-  vector<int> steps(nodes.size(), 0);
+  vector<long> steps(nodes.size(), 0);
 
   int doneCount = 0;
   while (doneCount != nodes.size()) {
@@ -120,8 +114,10 @@ int main() {
     }
   }
 
-  vector<int> stepsPerNode = followMap(instructions, nodes, m);
-  cout << getLcm(stepsPerNode) << endl;
+  vector<long> steps = followMap(instructions, nodes, m);
+  cout << accumulate(steps.begin(), steps.end(), 1L,
+                     doLcm /*use doLcm instead of lcm due to namespace clash*/)
+       << endl;
 
   file.close();
   return 0;
